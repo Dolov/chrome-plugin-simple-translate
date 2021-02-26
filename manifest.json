@@ -16,6 +16,13 @@
 		"default_title": "简单的翻译插件",
 		"default_popup": "popup.html"
 	},
+	"content_scripts": 
+	[
+		{
+			"matches": ["<all_urls>"],
+			"js": ["js/content_scripts.js"]
+		}
+	],
 	"permissions":
 	[
 		"contextMenus",
