@@ -27,7 +27,6 @@
 	"permissions":
 	[
 		"contextMenus",
-		"notifications",
 		"webRequest",
 		"storage"
 	],
