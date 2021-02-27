@@ -14,10 +14,15 @@
 
     #chrome-plugin-simple-translate-preview .word-item {
         display: flex;
+        justify-content: space-between;
     }
 
     #chrome-plugin-simple-translate-preview .word-content {
-        width: 300px;
+        width: 200px;
+    }
+
+    #chrome-plugin-simple-translate-preview .translate-content {
+        flex: 1;
     }
 
     #chrome-plugin-simple-translate-preview .handles > span {
@@ -38,8 +43,10 @@
     <ul>
         <li v-for="word in wordListMap[date]" class="word-item">
             <div class="word-content">{{ Object.keys(word)[0] }}</div>
+            <div class="translate-content">
+                {{ getTranslate(word) }}
+            </div>
             <div class="handles">
-                <span>查看翻译</span>
                 <span @click="remove(Object.keys(word)[0], date)">删除</span>
             </div>
         </li>

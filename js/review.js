@@ -10,7 +10,6 @@ const ReviewApp = {
         }
       }
   },
-
   methods: {
     remove(word, key) {
       chrome.storage.sync.get(key, (dataRes) => {
@@ -23,6 +22,10 @@ const ReviewApp = {
           
         })
       })
+    },
+    getTranslate(wordInfo) {
+      const result = Object.values(wordInfo)[0]
+      return result[0][0].tgt
     }
   },
   created() {
