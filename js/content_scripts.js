@@ -60,8 +60,6 @@ chrome.runtime.onMessage.addListener((message, sender, callback) => {
 	}
 })
 
-
-
 /** 渲染视图 */
 const renderContainer = (position) => {
 	const container = document.createElement('div')

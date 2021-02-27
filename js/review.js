@@ -1,22 +1,35 @@
-
 const todayKey = dayjs().format('YYYY-MM-DD')
 const yesterdayKey = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
 
 const ReviewApp = {
   data() {
-    return {
-      todayWordList: [],
-      yesterdayWordList: [],
-    }
+      return {
+        wordListMap: {
+          [todayKey]: [],
+          [yesterdayKey]: [],
+        }
+      }
   },
 
+  methods: {
+    remove(word, key) {
+      chrome.storage.sync.get(key, (dataRes) => {
+        const list = dataRes[key] || []
+        const filteredList = list.filter(item => {
+          return word !== Object.keys(item)[0]
+        })
+        this.wordListMap[key] = filteredList
+        chrome.storage.sync.set({[key]: [...filteredList]}, () => {
+          
+        })
+      })
+    }
+  },
   created() {
-    chrome.storage.sync.get(todayKey, (dataRes) => {
-      this.todayWordList = dataRes[todayKey] || []
-    })
-
-    chrome.storage.sync.get(yesterdayKey, (dataRes) => {
-      this.yesterdayWordList = dataRes[yesterdayKey] || []
+    Object.keys(this.wordListMap).forEach(dateKey => {
+      chrome.storage.sync.get(dateKey, (dataRes) => {
+        this.wordListMap[dateKey] = dataRes[dateKey] || []
+      })
     })
   },
 }

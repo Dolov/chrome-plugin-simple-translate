@@ -1,3 +1,12 @@
+#chrome-plugin-simple-translate-result-container * {
+  margin: 0;
+  padding: 0;
+}
+
+#chrome-plugin-simple-translate-result-container ul li {
+  list-style: none;
+}
+
 #chrome-plugin-simple-translate-result-container {
   position: absolute;
   background: black;
@@ -20,13 +29,4 @@
   top: 16px;
   right: 16px;
   cursor: pointer;
-}
-
-#chrome-plugin-simple-translate-result-container * {
-  margin: 0;
-  padding: 0;
-}
-
-#chrome-plugin-simple-translate-result-container ul li {
-  list-style: none;
 }

@@ -8,25 +8,43 @@
 </head>
 <style>
 
-    #simple-translate-plugin-preview {
-        /* background-color: red; */
+    #chrome-plugin-simple-translate-preview {
+        
+    }
+
+    #chrome-plugin-simple-translate-preview .word-item {
+        display: flex;
+    }
+
+    #chrome-plugin-simple-translate-preview .word-content {
+        width: 300px;
+    }
+
+    #chrome-plugin-simple-translate-preview .handles > span {
+        cursor: pointer;
+        margin-right: 8px;
+    }
+
+    #chrome-plugin-simple-translate-preview .handles > span:hover {
+        text-decoration: underline;
+        color: blue;
     }
 
 </style>
 <body id="chrome-plugin-simple-translate-preview">
-    <h1>今天收录的单词</h1>
+		
+	<div v-for="date in Object.keys(wordListMap)">
+		<h1>{{date}} 收录的单词</h1>
     <ul>
-        <li v-for="word in todayWordList">
-            {{ Object.keys(word)[0] }}
+        <li v-for="word in wordListMap[date]" class="word-item">
+            <div class="word-content">{{ Object.keys(word)[0] }}</div>
+            <div class="handles">
+                <span>查看翻译</span>
+                <span @click="remove(Object.keys(word)[0], date)">删除</span>
+            </div>
         </li>
     </ul>
-
-    <h1>请复习昨天收录的单词</h1>
-    <ul>
-        <li v-for="word in yesterdayWordList">
-            {{ Object.keys(word)[0] }}
-        </li>
-    </ul>
+	</div>
 </body>
 <script src="./js/dayjs.min.js"></script>
 <script src="./js/vue.js"></script>
