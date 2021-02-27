@@ -1,0 +1,32 @@
+#chrome-plugin-simple-translate-result-container {
+  position: absolute;
+  background: black;
+  border-radius: 5px;
+  padding: 16px;
+  color: white;
+  z-index: 100000000;
+  min-height: 54px;
+  max-height: 300px;
+}
+
+#chrome-plugin-simple-translate-result-container #content {
+  width: 200px;
+  overflow: auto;
+  word-break: break-all;
+}
+
+#chrome-plugin-simple-translate-result-container #save-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+}
+
+#chrome-plugin-simple-translate-result-container * {
+  margin: 0;
+  padding: 0;
+}
+
+#chrome-plugin-simple-translate-result-container ul li {
+  list-style: none;
+}

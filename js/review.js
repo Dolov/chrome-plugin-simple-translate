@@ -1,8 +1,6 @@
 
 const todayKey = dayjs().format('YYYY-MM-DD')
 const yesterdayKey = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
-console.log('todayKey: ', todayKey);
-console.log('yesterdayKey: ', yesterdayKey);
 
 const ReviewApp = {
   data() {
@@ -23,4 +21,4 @@ const ReviewApp = {
   },
 }
 
-Vue.createApp(ReviewApp).mount('#simple-translate-plugin-preview')
+Vue.createApp(ReviewApp).mount('#chrome-plugin-simple-translate-preview')

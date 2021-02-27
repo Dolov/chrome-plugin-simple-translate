@@ -23,7 +23,6 @@ const fetchTranslateResult = (text, callback) => {
 		/** 翻译结束 */
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 			callback(xhr.response)
-			saveWord(text, xhr.response)
 		}
 	}
 }
@@ -44,7 +43,10 @@ const triggerTranslate = (selectionText) => {
 	fetchTranslateResult(selectionText, (response) => {
 		sendMessageToContentScript({
 			type: 'onTranslateEnd',
-			payload: response,
+			payload: {
+				word: selectionText,
+				...response
+			},
 		})
 	})
 }
@@ -70,6 +72,12 @@ chrome.runtime.onMessage.addListener((message, sender, callback) => {
 	/** 页面选中了文本 */
 	if (type === 'onSelected') {
 		triggerTranslate(payload)
+		return
+	}
+	if (type === 'saveWord') {
+		// triggerTranslate(payload)
+		const { word, wordInfo } = payload
+		saveWord(word, wordInfo)
 	}
 })
 
