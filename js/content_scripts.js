@@ -1,7 +1,6 @@
-
 /** 存储鼠标位置 */
 const mousePos = {
-    
+
 }
 
 /** 容器 id */
@@ -9,57 +8,74 @@ const containerId = 'simple-translate-plugin-container'
 
 /** 点击鼠标获取位置 */
 document.onclick = (event) => {
-    const { pageX, pageY } = event
-    mousePos.pageX = pageX
-    mousePos.pageY = pageY
+	const { pageX, pageY } = event
+	mousePos.pageX = pageX
+	mousePos.pageY = pageY
 
-    const container = document.getElementById(containerId)
-    if (!container) return
-    /** 点击容器外部时，移除容器 */
-    if (!container.contains(event.target)) {
-        container.parentNode.removeChild(container)
-    }
+	const container = document.getElementById(containerId)
+	if (!container) return
+	/** 点击容器外部时，移除容器 */
+	if (!container.contains(event.target)) {
+		container.parentNode.removeChild(container)
+	}
+}
+
+/**
+ * 监听单词被选中
+ */
+document.onmouseup = (event) => {
+	// var parentOffset = $(this).offset();
+	// var x = e.pageX - parentOffset.left;
+	// var y = e.pageY - parentOffset.top;
+	const selection = window.getSelection().toString()
+	if (selection.length < 1) return
+	const word = /^[a-zA-Z]+$/.test(selection)
+	if (!word) return
+	chrome.runtime.sendMessage({
+		type: 'onSelected',
+		payload: selection
+	})
 }
 
 /** content 监听消息 */
 chrome.runtime.onMessage.addListener((message, sender, callback) => {
-    const { type, tabInfo, selectedInfo, response } = message
-    /** 开始构建视图 */
-    if (type === 'translateStart') {
-        renderView(mousePos, selectedInfo)
-        return
-    }
-    if (type === 'translateEnd') {
-        console.log('response: ', response);
-        const { errorCode, translateResult } = response || {}
-        if (errorCode === 0) {
-            renderTranslateResult(translateResult)
-        }
-        
-    }
+	const { type, payload } = message
+	/** 开始构建视图 */
+	if (type === 'onTranslateStart') {
+		renderView(mousePos, payload)
+		return
+	}
+	if (type === 'onTranslateEnd') {
+		const { errorCode, translateResult } = payload || {}
+		if (errorCode === 0) {
+			renderTranslateResult(translateResult)
+		}
+	}
 })
 
 /** 渲染视图 */
-const renderView = (position, selectedInfo) => {
-    const { selectionText } = selectedInfo
-    const container = document.createElement('div')
-    container.id = containerId
-    const { pageX, pageY } = position
-    container.style.width = '300px'
-    container.style.height = '200px'
-    container.style.position = 'absolute'
-    container.style.top = `${pageY}px`
-    container.style.left = `${pageX}px`
-    container.style.background = `black`
-    container.style.borderRadius = `5px`
-    container.style.color = `white`
-    container.style.wordBreak = `break-all`
-    container.style.padding = '5px'
-    const view = `
+const renderView = (position, selectionText) => {
+	const container = document.createElement('div')
+	container.id = containerId
+	const { pageX, pageY } = position
+	container.style.width = '300px'
+	container.style.minHeight = '50px'
+	container.style.maxHeight = '300'
+	container.style.overflow = 'auto'
+	container.style.position = 'absolute'
+	container.style.top = `${pageY + 10}px`
+	container.style.left = `${pageX + 30}px`
+	container.style.background = `black`
+	container.style.borderRadius = `5px`
+	container.style.color = `white`
+	container.style.wordBreak = `break-all`
+	container.style.padding = '12px'
+	container.style.zIndex = 100000000
+	const view = `
         <span>${selectionText}</span>
     `
-    container.innerHTML = view
-    document.body.appendChild(container)
+	container.innerHTML = view
+	document.body.appendChild(container)
 }
 
 /**
@@ -68,11 +84,11 @@ const renderView = (position, selectedInfo) => {
  * @returns {void}
  */
 const renderTranslateResult = (translateResult) => {
-    if (!Array.isArray(translateResult)) return
-    const container = document.getElementById(containerId)
-    container.innerHTML = `
+	if (!Array.isArray(translateResult)) return
+	const container = document.getElementById(containerId)
+	container.innerHTML = `
         ${translateResult.map(children => {
-            return `<ul>${children.map(item => `<li>${item.tgt}</li>`)}</ul>`
-        })}
+		return `<ul>${children.map(item => `<li>${item.tgt}</li>`)}</ul>`
+	})}
     `
 }

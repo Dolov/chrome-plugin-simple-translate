@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+    #simple-translate-plugin-preview {
+        /* background-color: red; */
+    }
+
+</style>
+<body id="simple-translate-plugin-preview">
+    <h1>今天收录的单词</h1>
+    <ul>
+        <li v-for="word in todayWordList">
+            {{ Object.keys(word)[0] }}
+        </li>
+    </ul>
+
+    <h1>请复习昨天收录的单词</h1>
+    <ul>
+        <li v-for="word in yesterdayWordList">
+            {{ Object.keys(word)[0] }}
+        </li>
+    </ul>
+</body>
+<script src="./js/dayjs.min.js"></script>
+<script src="./js/vue.js"></script>
+<script src="./js/review.js"></script>
+</html>
